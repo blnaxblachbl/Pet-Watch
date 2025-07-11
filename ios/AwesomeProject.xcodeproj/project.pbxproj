@@ -271,6 +271,7 @@
 				DEVELOPMENT_TEAM = TN8S5G3Z79;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = AwesomeProject/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Pet Watch Test";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -299,6 +300,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = TN8S5G3Z79;
 				INFOPLIST_FILE = AwesomeProject/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Pet Watch Test";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

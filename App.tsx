@@ -1,9 +1,10 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeScreen from './src/screens/Home';
+import PetsStack from './src/navigation/MainStack';
 import Profile from './src/screens/Profile';
 import { CurrentUserProvider } from './src/context/CurrentUserContext';
+import MainStack from './src/navigation/MainStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -11,10 +12,7 @@ function App() {
   return (
     <CurrentUserProvider>
       <NavigationContainer>
-        <Tab.Navigator>
-          <Tab.Screen name="Pets" component={HomeScreen} />
-          <Tab.Screen name="Profile" component={Profile} />
-        </Tab.Navigator>
+        <MainStack />
       </NavigationContainer>
     </CurrentUserProvider>
   );

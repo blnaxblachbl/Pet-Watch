@@ -4,6 +4,8 @@ import { Pet } from '../../mocks/api/types';
 import { styles } from './styles';
 import { useCurrentUserContext } from '../../context/CurrentUserContext';
 import PaymentModal from '../PaymentModal';
+import { NavigationProp, useNavigation } from '@react-navigation/native';
+import type { MainStackParamList } from '../../navigation/MainStack';
 
 type PetCardProps = {
   pet: Pet;
@@ -12,6 +14,7 @@ type PetCardProps = {
 const PetCard: React.FC<PetCardProps> = ({ pet }) => {
   const { user, setUser } = useCurrentUserContext();
   const [showPayment, setShowPayment] = useState(false);
+  const navigation = useNavigation<NavigationProp<MainStackParamList>>();
 
   const alreadyAdopted = useMemo(
     () => user?.pets?.some((p: Pet) => p.id === pet.id),
@@ -38,7 +41,12 @@ const PetCard: React.FC<PetCardProps> = ({ pet }) => {
   };
 
   return (
-    <View style={styles.card}>
+    <TouchableOpacity
+      activeOpacity={0.85}
+      onPress={() => navigation.navigate('PetInfo', { petId: pet.id })}
+      style={styles.card}
+      testID="PetCardTouchable"
+    >
       <Image source={pet.image} style={styles.petImage} resizeMode="cover" />
       <View style={styles.cardContent}>
         <Text style={styles.petName}>{pet.name}</Text>
@@ -63,7 +71,7 @@ const PetCard: React.FC<PetCardProps> = ({ pet }) => {
         onComplete={handlePaymentComplete}
         onCancel={handlePaymentCancel}
       />
-    </View>
+    </TouchableOpacity>
   );
 };
 

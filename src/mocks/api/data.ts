@@ -39,7 +39,7 @@ export const pets: Pet[] = [
 export const currentUser: User = {
   id: 1,
   name: 'Current User',
-  avatar: undefined,
+  avatar,
   pets: [],
 };
 export const users: User[] = [
