@@ -20,7 +20,7 @@ const Profile = () => {
           longitude: position.coords.longitude,
         });
       },
-      error => {
+      _error => {
         setLocation({
           latitude: null,
           longitude: null,

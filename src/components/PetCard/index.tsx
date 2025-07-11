@@ -1,8 +1,9 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { Pet } from '../../mocks/api/types';
 import { styles } from './styles';
 import { useCurrentUserContext } from '../../context/CurrentUserContext';
+import PaymentModal from '../PaymentModal';
 
 type PetCardProps = {
   pet: Pet;
@@ -10,6 +11,7 @@ type PetCardProps = {
 
 const PetCard: React.FC<PetCardProps> = ({ pet }) => {
   const { user, setUser } = useCurrentUserContext();
+  const [showPayment, setShowPayment] = useState(false);
 
   const alreadyAdopted = useMemo(
     () => user?.pets?.some((p: Pet) => p.id === pet.id),
@@ -19,10 +21,20 @@ const PetCard: React.FC<PetCardProps> = ({ pet }) => {
   const handleAdopt = () => {
     if (!user) return;
     if (alreadyAdopted) return;
+    setShowPayment(true);
+  };
+
+  const handlePaymentComplete = () => {
+    if (!user) return;
     setUser({
       ...user,
       pets: [...(user.pets || []), pet],
     });
+    setShowPayment(false);
+  };
+
+  const handlePaymentCancel = () => {
+    setShowPayment(false);
   };
 
   return (
@@ -45,6 +57,12 @@ const PetCard: React.FC<PetCardProps> = ({ pet }) => {
           </Text>
         </TouchableOpacity>
       </View>
+      <PaymentModal
+        visible={showPayment}
+        pet={pet}
+        onComplete={handlePaymentComplete}
+        onCancel={handlePaymentCancel}
+      />
     </View>
   );
 };
