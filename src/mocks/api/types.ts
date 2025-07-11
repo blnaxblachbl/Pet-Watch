@@ -1,9 +1,12 @@
+import { ImageSourcePropType } from "react-native";
+
 export type Pet = {
   id: number;
   name: string;
   age: number;
-  images?: string[];
+  image?: ImageSourcePropType;
   owner?: User;
+  description: string;
 };
 export type User = {
   id: number;

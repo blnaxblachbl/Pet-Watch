@@ -3,8 +3,6 @@ import { View, Text, Image, TouchableOpacity } from 'react-native';
 import { Pet } from '../../mocks/api/types';
 import { styles } from './styles';
 
-const PLACEHOLDER_IMAGE = 'https://placekitten.com/200/200';
-
 type PetCardProps = {
   pet: Pet;
 };
@@ -12,7 +10,7 @@ type PetCardProps = {
 const PetCard: React.FC<PetCardProps> = ({ pet }) => (
   <View style={styles.card}>
     <Image
-      source={{ uri: PLACEHOLDER_IMAGE }}
+      source={pet.image}
       style={styles.petImage}
       resizeMode="cover"
     />
@@ -20,7 +18,7 @@ const PetCard: React.FC<PetCardProps> = ({ pet }) => (
       <Text style={styles.petName}>{pet.name}</Text>
       <Text style={styles.petAge}>Age: {pet.age}</Text>
       <Text style={styles.petDescription}>
-        A lovely pet looking for a home.
+        {pet.description}
       </Text>
       <TouchableOpacity style={styles.adoptButton}>
         <Text style={styles.adoptButtonText}>Adopt</Text>
