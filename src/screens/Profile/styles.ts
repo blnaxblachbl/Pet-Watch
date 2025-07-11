@@ -30,6 +30,11 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 8,
   },
+  locationText: {
+    fontSize: 16,
+    color: '#555',
+    marginBottom: 4,
+  },
   sectionTitle: {
     fontSize: 20,
     fontWeight: '600',

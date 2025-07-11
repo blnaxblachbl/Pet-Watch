@@ -1,11 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Image, FlatList, ActivityIndicator } from 'react-native';
+import Geolocation from '@react-native-community/geolocation';
 import styles from './styles';
 import { useCurrentUserContext } from '../../context/CurrentUserContext';
 import PetCard from '../../components/PetCard';
 
 const Profile = () => {
   const { user, loading, error } = useCurrentUserContext();
+  const [location, setLocation] = useState<{ latitude: number | null; longitude: number | null }>({
+    latitude: null,
+    longitude: null,
+  });
+
+  useEffect(() => {
+    Geolocation.getCurrentPosition(
+      position => {
+        setLocation({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        });
+      },
+      error => {
+        setLocation({
+          latitude: null,
+          longitude: null,
+        });
+      },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 10000 }
+    );
+  }, []);
 
   if (loading) {
     return (
@@ -41,6 +64,13 @@ const Profile = () => {
             resizeMode="cover"
           />
           <Text style={styles.name}>{user.name}</Text>
+          {location.latitude !== null && location.longitude !== null ? (
+            <Text style={styles.locationText}>
+              Location: {location.latitude.toFixed(6)}, {location.longitude.toFixed(6)}
+            </Text>
+          ) : (
+            <Text style={styles.locationText}>Location: Not available</Text>
+          )}
           <Text style={styles.sectionTitle}>Adopted Pets</Text>
         </View>
       }
