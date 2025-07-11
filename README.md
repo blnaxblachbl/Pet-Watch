@@ -51,4 +51,4 @@ yarn ios
 ```
 
 # Demo
-<video src="./demo/demo.mov" width="100%" height="360" controls></video>
+<video src="./demo/demo.mp4" width="100%" height="360" controls></video>
