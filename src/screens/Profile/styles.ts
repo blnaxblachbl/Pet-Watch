@@ -1,12 +1,16 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
+  petsListStyle: {
+    flex: 1,
+    backgroundColor: '#fff',
+    paddingHorizontal: 16,
+  },
   container: {
     flex: 1,
     alignItems: 'center',
     backgroundColor: '#fff',
     paddingTop: 40,
-    paddingHorizontal: 16,
   },
   centered: {
     flex: 1,

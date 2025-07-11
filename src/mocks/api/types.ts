@@ -11,6 +11,6 @@ export type Pet = {
 export type User = {
   id: number;
   name: string;
-  avatar?: string;
+  avatar?: ImageSourcePropType;
   pets: Pet[];
 };

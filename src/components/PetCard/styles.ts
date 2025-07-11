@@ -18,7 +18,7 @@ export const styles = StyleSheet.create({
   },
   petImage: {
     width: 120,
-    height: 120,
+    height: "100%",
   },
   cardContent: {
     flex: 1,

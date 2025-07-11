@@ -4,8 +4,6 @@ import styles from './styles';
 import { useCurrentUserContext } from '../../context/CurrentUserContext';
 import PetCard from '../../components/PetCard';
 
-const AVATAR_PLACEHOLDER = 'https://placekitten.com/150/150';
-
 const Profile = () => {
   const { user, loading, error } = useCurrentUserContext();
 
@@ -26,24 +24,27 @@ const Profile = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <Image
-        source={{ uri: user.avatar || AVATAR_PLACEHOLDER }}
-        style={styles.avatar}
-      />
-      <Text style={styles.name}>{user.name}</Text>
-      <Text style={styles.sectionTitle}>Adopted Pets</Text>
-      {user.pets.length === 0 ? (
+    <FlatList
+      data={user.pets}
+      keyExtractor={item => item.id.toString()}
+      renderItem={({ item }) => <PetCard pet={item} />}
+      contentContainerStyle={styles.petsList}
+      style={styles.petsListStyle}
+      ListEmptyComponent={
         <Text style={styles.noPetsText}>No adopted pets yet.</Text>
-      ) : (
-        <FlatList
-          data={user.pets}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={({ item }) => <PetCard pet={item} />}
-          contentContainerStyle={styles.petsList}
-        />
-      )}
-    </View>
+      }
+      ListHeaderComponent={
+        <View style={styles.container}>
+          <Image
+            source={user.avatar}
+            style={styles.avatar}
+            resizeMode="cover"
+          />
+          <Text style={styles.name}>{user.name}</Text>
+          <Text style={styles.sectionTitle}>Adopted Pets</Text>
+        </View>
+      }
+    />
   );
 };
 
