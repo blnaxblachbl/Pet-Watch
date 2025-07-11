@@ -1,4 +1,4 @@
-import { Pet } from './types';
+import { Pet, User } from './types';
 import { pets, currentUser } from './data';
 
 export function getPetsList(): Promise<Pet[]> {
@@ -12,7 +12,7 @@ export function getPetsById(id: number): Promise<Pet | undefined> {
     setTimeout(() => resolve(pet), 500);
   });
 }
-export function getCurrentUser() {
+export function getCurrentUser(): Promise<User> {
   return new Promise(resolve => {
     setTimeout(() => resolve(currentUser), 500);
   });

@@ -1,20 +1,19 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { getCurrentUser } from '../mocks/api/index';
-
-type CurrentUser = any; // Replace 'any' with a specific type if available
+import { User } from '../mocks/api/types';
 
 interface CurrentUserContextType {
-  user: CurrentUser;
+  user: User | null;
   loading: boolean;
   error: unknown;
-  setUser: React.Dispatch<React.SetStateAction<CurrentUser>>;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
   refetch: () => void;
 }
 
 const CurrentUserContext = createContext<CurrentUserContextType | undefined>(undefined);
 
 export const CurrentUserProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<CurrentUser>(null);
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<unknown>(null);
 
