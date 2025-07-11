@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import {
   View,
   Text,
   Image,
-  StyleSheet,
-  Dimensions,
   ScrollView,
   RefreshControl,
+  TouchableOpacity,
 } from 'react-native';
+import styles from './styles';
 import { RouteProp, useRoute } from '@react-navigation/native';
 import { usePetById } from '../../hooks/usePetById';
+import { useCurrentUserContext } from '../../context/CurrentUserContext';
+import PaymentModal from '../../components/PaymentModal';
+import type { Pet } from '../../mocks/api/types';
 
 type PetInfoRouteProp = RouteProp<{ params: { petId: number } }, 'params'>;
 
@@ -17,6 +20,33 @@ const PetInfoScreen: React.FC = () => {
   const route = useRoute<PetInfoRouteProp>();
   const { petId } = route.params;
   const { data: pet, loading } = usePetById(petId);
+
+  const { user, setUser } = useCurrentUserContext();
+  const [showPayment, setShowPayment] = useState(false);
+
+  const alreadyAdopted = useMemo(
+    () => user?.pets?.some((p: Pet) => p.id === petId),
+    [user?.pets, petId]
+  );
+
+  const handleAdopt = () => {
+    if (!user) return;
+    if (alreadyAdopted) return;
+    setShowPayment(true);
+  };
+
+  const handlePaymentComplete = () => {
+    if (!user || !pet) return;
+    setUser({
+      ...user,
+      pets: [...(user.pets || []), pet],
+    });
+    setShowPayment(false);
+  };
+
+  const handlePaymentCancel = () => {
+    setShowPayment(false);
+  };
 
   return (
     <ScrollView
@@ -34,39 +64,29 @@ const PetInfoScreen: React.FC = () => {
             <Text style={styles.petName}>{pet.name}</Text>
             <Text style={styles.petAge}>Age: {pet.age}</Text>
             <Text style={styles.petDescription}>{pet.description}</Text>
+            <TouchableOpacity
+              style={[
+                styles.adoptButton,
+                alreadyAdopted && { backgroundColor: "#aaa" },
+              ]}
+              onPress={handleAdopt}
+              disabled={alreadyAdopted}
+            >
+              <Text style={styles.adoptButtonText}>
+                {alreadyAdopted ? "Adopted" : "Adopt"}
+              </Text>
+            </TouchableOpacity>
           </View>
+          <PaymentModal
+            visible={showPayment}
+            pet={pet}
+            onComplete={handlePaymentComplete}
+            onCancel={handlePaymentCancel}
+          />
         </>
       )}
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    width: Dimensions.get('window').width,
-  },
-  contentContainer: {
-    padding: 24,
-  },
-  petImage: {
-    width: '100%',
-    height: 200,
-  },
-  petName: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  petAge: {
-    fontSize: 18,
-    marginBottom: 8,
-  },
-  petDescription: {
-    fontSize: 16,
-    color: '#555',
-  },
-});
 
 export default PetInfoScreen;
